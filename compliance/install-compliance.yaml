@@ -5,6 +5,8 @@ metadata:
     openshift.io/cluster-monitoring: "true"
     pod-security.kubernetes.io/enforce: privileged 
   name: openshift-compliance
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 ---
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
