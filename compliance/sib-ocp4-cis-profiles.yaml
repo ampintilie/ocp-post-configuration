@@ -4,6 +4,7 @@ metadata:
   name: sib-ocp4-cis
   annotations:
     compliance.openshift.io/product-type: Platform
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   extends: ocp4-cis
   setValues: []
@@ -18,6 +19,7 @@ metadata:
   name: sib-ocp4-cis-node
   annotations:
     compliance.openshift.io/product-type: Node
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   extends: ocp4-cis-node
   description: A customized profile for SIB based on ocp4-cis-node

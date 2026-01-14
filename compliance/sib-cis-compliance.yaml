@@ -4,6 +4,8 @@ kind: ScanSettingBinding
 metadata:
   name: sib-cis-compliance
   namespace: openshift-compliance
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 profiles:
   - name: sib-ocp4-cis
     kind: TailoredProfile

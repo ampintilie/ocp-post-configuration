@@ -3,6 +3,8 @@ kind: ScanSetting
 metadata:
   name: all-nodes-scan-no-remediation
   namespace: openshift-compliance
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 maxRetryOnTimeout: 3
 rawResultStorage:
   nodeSelector:
