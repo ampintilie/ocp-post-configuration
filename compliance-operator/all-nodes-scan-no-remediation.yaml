@@ -1,0 +1,41 @@
+apiVersion: compliance.openshift.io/v1alpha1
+kind: ScanSetting
+metadata:
+  name: all-nodes-scan-no-remediation
+  namespace: openshift-compliance
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "3"
+maxRetryOnTimeout: 3
+rawResultStorage:
+  nodeSelector:
+    node-role.kubernetes.io/master: ""
+  pvAccessModes:
+    - ReadWriteOnce
+  rotation: 3 # TODO Change if needed
+  size: 1Gi # TODO Change if needed
+  tolerations:
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+roles:
+  - master
+  - worker
+scanTolerations:
+  - operator: Exists
+schedule: 0 0 * * * # everyday at midnight
+showNotApplicable: false
+strictNodeScan: true # don't proceed if a node fails to scan
+suspend: false
+timeout: 30m
