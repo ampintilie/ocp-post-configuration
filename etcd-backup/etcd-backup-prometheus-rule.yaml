@@ -1,0 +1,18 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: etcd-backup-alerts
+  namespace: openshift-monitoring
+  annotations:
+    argocd.argoproj.io/sync-wave: "6"
+spec:
+  groups:
+  - name: OCPCronJobs
+    rules:
+    - alert: EtcdBackupJobAlert
+      annotations:
+        message: Etcd Backup failed in namespace default
+      expr: kube_job_status_failed{namespace="default", job_name=~"cronjob-etcd-backup.+"}>0
+      labels:
+        severity: critical

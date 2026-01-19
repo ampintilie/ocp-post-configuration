@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backup-configmap
+  namespace: "etcd-backup"
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+data:
+  backup.sh: |-
+    #!/bin/sh
+    set -e # Exit on error
+    echo "### LAUNCHING ETCD BACKUP ###"
+    echo "*** Cluster Backup Started $(date) ..."
+    chroot /host /bin/sh <<"EOT"
+    /usr/local/bin/cluster-backup.sh /home/core/assets/etcd-backup-$(date "+%F")
+    EOT
+    echo "*** Cluster Backup Finished $(date) ..."
+    echo "----Begin Copying To NFS Share ----"
+    cp -r /host/home/core/assets/etcd-backup-$(date "+%F") /mnt/nfs-share/
+    echo "----Copying To NFS Share Completed ----"
+    echo "----Begin Cleanup Local Backup Folder ----"
+    rm -rvf /host/home/core/assets/etcd-backup-$(date "+%F")
+    echo "----Cleanup Local Backup Folder Completed ----"
+    echo "** END ** "
+immutable: false
