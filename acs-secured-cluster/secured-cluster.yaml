@@ -1,0 +1,24 @@
+apiVersion: platform.stackrox.io/v1alpha1
+kind: SecuredCluster
+metadata:
+  namespace: stackrox
+  name: stackrox-secured-cluster-services
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  admissionControl:
+    bypass: BreakGlassAnnotation
+    contactImageScanners: DoNotScanInline
+    listenOnCreates: false
+    listenOnEvents: true
+    listenOnUpdates: false
+    timeoutSeconds: 20
+  clusterName: ocppr
+  auditLogs:
+    collection: Auto
+  centralEndpoint: "https://central-rhacs-operator.apps.ocphub.dxb.com:443"
+  perNode:
+    collector:
+      collection: KernelModule
+      imageFlavor: Regular
+    taintToleration: TolerateTaints
