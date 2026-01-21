@@ -25,8 +25,6 @@ metadata:
     argocd.argoproj.io/sync-wave: "0"
 spec:
   upgradeStrategy: Default
-  targetNamespaces:
-  - rhacs-operator
 ---
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
@@ -36,7 +34,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
-  channel: "latest"
+  channel: "stable"
   installPlanApproval: Automatic
   name: rhacs-operator
   source: redhat-operators
